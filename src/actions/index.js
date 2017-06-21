@@ -3,16 +3,18 @@ import { browserHistory } from 'react-router';
 
 import {
     AUTH_USER,
+    UNAUTH_USER,
     AUTH_ERROR
 } from './types';
 
 const API_URL = 'http://localhost:8090'
 
-export function signinUser({ username, password }) {
-    let body = {
-        user: "admin",
-        password: "hejsan"
-    }
+export function signinUser({username, password}) {
+    // create form-data object for API
+    let body = new FormData();
+    body.append('user', username);
+    body.append('password', password);
+
     return function (dispatch) {
         // Submit username/password to server
         axios.post(`${API_URL}/authenticate/user`, body)
@@ -29,8 +31,7 @@ export function signinUser({ username, password }) {
                 // If request is bad...
                 // - Show an error to the user
                 dispatch(authError('Bad login'))
-            })
-            
+            });
     }
 }
 
@@ -39,4 +40,10 @@ export function authError(error) {
         type: AUTH_ERROR,
         payload: error
     }
+}
+
+export function signoutUser() {
+    localStorage.removeItem('token');
+
+    return { type: UNAUTH_USER }
 }
