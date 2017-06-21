@@ -35,6 +35,16 @@ export function signinUser({username, password}) {
     }
 }
 
+export function signupUser({ username, password}) {
+    let body = {
+        username,
+        password
+    }
+    return function (dispatch) {
+        axios.post(`${API_URL}/register/user`, body)
+    }
+}
+
 export function authError(error) {
     return {
         type: AUTH_ERROR,
