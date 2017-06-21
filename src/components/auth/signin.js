@@ -25,7 +25,7 @@ class Signin extends Component {
     }
 
     renderError() {
-        if(this.props.errorMessage) {
+        if (this.props.errorMessage) {
             return (
                 <div className='alert alert-danger'>
                     <strong>{this.props.errorMessage}</strong>
@@ -60,7 +60,7 @@ const signinForm = reduxForm({
 })(Signin);
 
 function mapStateToProps(state) {
-    return {  errorMessage: state.auth.error };
+    return { errorMessage: state.auth.error };
 }
 
 export default connect(mapStateToProps, actions)(signinForm);
