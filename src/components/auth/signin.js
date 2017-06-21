@@ -4,6 +4,16 @@ import { reduxForm, Field } from 'redux-form';
 import * as actions from '../../actions';
 import { connect } from 'react-redux';
 
+const renderField = ({ className, input, label, type, placeholder, meta: { touched, error } }) => (
+    <div>
+        <label>{label}</label>
+        <div>
+            <input className={`${className ? className : ''}`} {...input} placeholder={placeholder} type={type} />
+            {touched && error && <span className='error'>{error}</span>}
+        </div>
+    </div>
+)
+
 class Signin extends Component {
 
     handleFormSubmit({username, password}) {
@@ -13,15 +23,6 @@ class Signin extends Component {
         // Need to do something to log user in
 
         this.props.signinUser({ username, password });
-    }
-
-    renderInput(field) {
-        if (!field.className) { field.className = "form-control" }
-        if (!field.type) { field.type = "text" }
-
-        return (
-            <Field name={field.name} id={field.name} type={field.type} className={field.className} component="input" />
-        )
     }
 
     renderError() {
@@ -40,12 +41,20 @@ class Signin extends Component {
         return (
             <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                 <fieldset className='form-group'>
-                    <label>username:</label>
-                    {this.renderInput({ name: 'username', type: 'text' })}
+                    <Field component={renderField}
+                        className='form-control'
+                        name='username'
+                        type='username'
+                        label='Username:'
+                        />
                 </fieldset>
                 <fieldset className='form-group'>
-                    <label>password:</label>
-                    {this.renderInput({ name: 'password', type: 'password' })}
+                    <Field component={renderField}
+                        className='form-control'
+                        name='password'
+                        type='password'
+                        label='Password:'
+                        />
                 </fieldset>
                 {this.renderError()}
                 <button action="submit" className='btn btn-primary'>Sign in</button>
